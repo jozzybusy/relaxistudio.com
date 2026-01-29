@@ -1,0 +1,135 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-film-200;
+  }
+  
+  body {
+    @apply bg-film-950 text-film-100 antialiased;
+    background-image: 
+      radial-gradient(circle at 20% 50%, rgba(255,255,255,0.03) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(255,255,255,0.02) 0%, transparent 50%);
+    background-attachment: fixed;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+
+  /* 中文黑体 */
+  .font-chinese-bold {
+    font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "SimHei", "Heiti SC", sans-serif;
+    font-weight: 700;
+  }
+
+  .font-chinese-regular {
+    font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "SimHei", "Heiti SC", sans-serif;
+    font-weight: 400;
+  }
+
+  /* 英文科技字体 */
+  .font-tech {
+    font-family: "Orbitron", "Rajdhani", "Teko", "Chakra Petch", "Arial Black", "Impact", sans-serif !important;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .font-tech-logo {
+    font-family: "Orbitron", "Rajdhani", "Arial Black", sans-serif !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.15em !important;
+  }
+
+  /* 黑白胶片效果 */
+  .film-grain {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    z-index: 9999;
+  }
+
+  /* 高对比度文本 */
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-film-50 font-serif tracking-tight;
+  }
+
+  /* 胶片风格边框 */
+  .film-border {
+    @apply border border-film-400;
+    box-shadow: 
+      inset 0 1px 0 rgba(255,255,255,0.1),
+      0 0 0 1px rgba(0,0,0,0.5);
+  }
+}
+
+@layer components {
+  /* 胶片风格卡片 */
+  .film-card {
+    @apply bg-film-900/50 film-border backdrop-blur-sm transition-all duration-300;
+  }
+  
+  .film-card:hover {
+    @apply bg-film-800/50 border-film-300;
+    box-shadow: 
+      inset 0 1px 0 rgba(255,255,255,0.15),
+      0 0 0 1px rgba(0,0,0,0.5),
+      0 10px 40px rgba(0,0,0,0.5);
+  }
+
+  /* 胶片风格按钮 */
+  .film-button {
+    @apply px-6 py-3 bg-film-800 text-film-100 border border-film-400 font-serif tracking-wider uppercase text-sm transition-all duration-300 cursor-pointer;
+    box-shadow: 
+      inset 0 1px 0 rgba(255,255,255,0.1),
+      0 0 0 1px rgba(0,0,0,0.5);
+    pointer-events: auto !important;
+    position: relative !important;
+    z-index: 50 !important;
+  }
+  
+  .film-button:hover {
+    @apply bg-film-700 border-film-300;
+    box-shadow: 
+      inset 0 1px 0 rgba(255,255,255,0.15),
+      0 0 0 1px rgba(0,0,0,0.5),
+      0 4px 20px rgba(0,0,0,0.4);
+  }
+
+  .film-button:active {
+    @apply bg-film-600 border-film-500;
+  }
+
+  /* 文本阴影效果 */
+  .text-glow {
+    text-shadow: 0 0 40px rgba(255,255,255,0.1);
+  }
+
+  /* 平滑滚动 */
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* 自定义滚动条 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #202020;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #606060;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #808080;
+}
