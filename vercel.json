@@ -4,10 +4,5 @@
   "devCommand": "npm run dev",
   "installCommand": "npm install",
   "framework": "vite",
-  "ignoreCommand": "find . -name '*.mp4' -o -name '*.MP4' -o -name '*.mov' -o -name '*.avi' -o -name '*.mkv' -o -name '*.pdf' -o -name '*.PDF' | grep -v 'node_modules'",
-  "functions": {
-    "api/*.ts": {
-      "maxDuration": 10
-    }
-  }
+  "ignoreCommand": "find . -name '*.mp4' -o -name '*.MP4' -o -name '*.mov' -o -name '*.avi' -o -name '*.mkv' -o -name '*.pdf' -o -name '*.PDF' | grep -v 'node_modules'"
 }
