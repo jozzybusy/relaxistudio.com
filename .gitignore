@@ -90,3 +90,10 @@ temp/
 # Vercel specific
 .vercel
 .vercel/project.json
+
+# Large video files that should not be tracked in Git
+# These files are now hosted on Tencent Cloud COS
+public/ASML/*.mp4
+public/vrmusic/*.mp4
+public/sounddesign/*.mp4
+public/mocapmusic/*.mp4

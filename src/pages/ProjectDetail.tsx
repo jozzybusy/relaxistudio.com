@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import TrueFocus from '../components/animations/TrueFocus'
 import PixelTransition from '../components/PixelTransition'
+import { TENCENT_COS_URLS } from '../config/videoUrls'
 
 interface Project {
   id: number
@@ -55,7 +56,7 @@ const projects: Record<number, Project> = {
       "Three.js",
       "GraphQL"
     ],
-    videos: ["/ASML/追光元宇宙.mp4"],
+    videos: [TENCENT_COS_URLS.asmlMetaverse],
     thumbnails: ["/ASML/asmlmetaverse.png"]
   },
   2: {
@@ -130,7 +131,7 @@ const projects: Record<number, Project> = {
       "Unreal Engine MetaSound",
       "Sound Particles"
     ],
-    videos: ["/vrmusic/1.mp4"],
+    videos: [TENCENT_COS_URLS.vrMusic1],
     images: ["/vrmusic/2.png", "/vrmusic/3.png", "/vrmusic/4.png"]
   },
   4: {
@@ -170,7 +171,7 @@ const projects: Record<number, Project> = {
       "Reason Studios",
       "Bitwig Studio"
     ],
-    videos: ["/sounddesign/Figure.mp4", "/sounddesign/Timeline 1.mp4"],
+    videos: [TENCENT_COS_URLS.sounddesignFigure, TENCENT_COS_URLS.sounddesignTimeline],
     thumbnails: ["/sounddesign/figuresound.png", "/sounddesign/mediasound.png"],
     images: ["/sounddesign/1.png", "/sounddesign/2.png"]
   },
@@ -246,7 +247,7 @@ const projects: Record<number, Project> = {
       "TouchDesigner",
       "OSC/UDP Protocol"
     ],
-    videos: ["/mocapmusic/4.mp4"],
+    videos: [TENCENT_COS_URLS.mocapmusic4],
     images: ["/mocapmusic/1.jpg", "/mocapmusic/2.jpg", "/mocapmusic/3.jpg"]
   },
   7: {
