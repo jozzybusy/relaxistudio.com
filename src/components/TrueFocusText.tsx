@@ -74,7 +74,7 @@ const TrueFocus = ({
     <div
       className="relative flex gap-4 justify-center items-center flex-wrap"
       ref={containerRef}
-      style={{ outline: 'none', userSelect: 'none' }}
+      style={{ outline: 'none', userSelect: 'none' } as React.CSSProperties}
     >
       {words.map((word, index) => {
         const isActive = index === currentIndex;
@@ -91,12 +91,12 @@ const TrueFocus = ({
                 : isActive
                   ? `blur(0px)`
                   : `blur(${blurAmount}px)`,
-              '--border-color': borderColor,
-              '--glow-color': glowColor,
+              '--border-color': borderColor as any,
+              '--glow-color': glowColor as any,
               transition: `filter ${animationDuration}s ease`,
               outline: 'none',
               userSelect: 'none'
-            }}
+            } as React.CSSProperties}
             onMouseEnter={() => handleMouseEnter(index)}
             onMouseLeave={handleMouseLeave}
           >
@@ -118,8 +118,8 @@ const TrueFocus = ({
           duration: animationDuration
         }}
         style={{
-          '--border-color': borderColor,
-          '--glow-color': glowColor
+          '--border-color': borderColor as any,
+          '--glow-color': glowColor as any
         } as React.CSSProperties}
       >
         <span
@@ -127,28 +127,28 @@ const TrueFocus = ({
           style={{
             borderColor: 'var(--border-color)',
             filter: 'drop-shadow(0 0 4px var(--border-color))'
-          }}
+          } as React.CSSProperties}
         ></span>
         <span
           className="absolute w-4 h-4 border-[3px] rounded-[3px] top-[-10px] right-[-10px] border-l-0 border-b-0"
           style={{
             borderColor: 'var(--border-color)',
             filter: 'drop-shadow(0 0 4px var(--border-color))'
-          }}
+          } as React.CSSProperties}
         ></span>
         <span
           className="absolute w-4 h-4 border-[3px] rounded-[3px] bottom-[-10px] left-[-10px] border-r-0 border-t-0"
           style={{
             borderColor: 'var(--border-color)',
             filter: 'drop-shadow(0 0 4px var(--border-color))'
-          }}
+          } as React.CSSProperties}
         ></span>
         <span
           className="absolute w-4 h-4 border-[3px] rounded-[3px] bottom-[-10px] right-[-10px] border-l-0 border-t-0"
           style={{
             borderColor: 'var(--border-color)',
             filter: 'drop-shadow(0 0 4px var(--border-color))'
-          }}
+          } as React.CSSProperties}
         ></span>
       </motion.div>
     </div>

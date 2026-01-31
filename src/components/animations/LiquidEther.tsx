@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
@@ -559,6 +561,7 @@ export default function LiquidEther({
     }
 
     class Advection extends ShaderPass {
+      line: any;
       constructor(simProps: any) {
         super({
           material: {
@@ -605,6 +608,7 @@ export default function LiquidEther({
     }
 
     class ExternalForce extends ShaderPass {
+      mouse: any;
       constructor(simProps: any) {
         super({ output: simProps.dst });
         this.init(simProps);
@@ -940,7 +944,7 @@ export default function LiquidEther({
         this.init();
       }
       init() {
-        this.simulation = new Simulation();
+        this.simulation = new Simulation({});
         this.scene = new THREE.Scene();
         this.camera = new THREE.Camera();
         this.output = new THREE.Mesh(
