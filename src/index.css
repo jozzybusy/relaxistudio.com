@@ -89,7 +89,7 @@
       0 0 0 1px rgba(0,0,0,0.5);
     pointer-events: auto !important;
     position: relative !important;
-    z-index: 50 !important;
+    z-index: 40 !important;
   }
   
   .film-button:hover {
