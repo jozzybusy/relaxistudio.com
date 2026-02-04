@@ -13,17 +13,52 @@ const Contact = () => {
     message: '',
   })
   const [showPopup, setShowPopup] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
+  const [submitMessage, setSubmitMessage] = useState('')
 
   // Scroll to top when component mounts or location changes
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [location.pathname])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log('Form submitted:', formData)
-    // 这里可以添加表单提交逻辑
-    alert('感谢您的留言！我们会尽快与您联系。')
+    setIsSubmitting(true)
+    setSubmitStatus('idle')
+    setSubmitMessage('')
+
+    try {
+      const response = await fetch('https://formspree.io/f/xzdvnlqo', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      })
+
+      if (response.ok) {
+        setSubmitStatus('success')
+        setSubmitMessage('感谢您的留言！我们会尽快与您联系。')
+        // 重置表单
+        setFormData({
+          name: '',
+          email: '',
+          subject: '',
+          message: ''
+        })
+      } else {
+        setSubmitStatus('error')
+        setSubmitMessage('提交失败，请稍后再试或直接发送邮件到 joezb@relaxistudio.com')
+      }
+    } catch (error) {
+      setSubmitStatus('error')
+      setSubmitMessage('网络错误，请检查您的网络连接或稍后再试')
+      console.error('Form submission error:', error)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -150,6 +185,17 @@ const Contact = () => {
           <div className="film-card p-8">
             <h2 className="text-2xl font-chinese-bold mb-6">发送消息</h2>
             <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Submit Status Message */}
+              {submitStatus !== 'idle' && (
+                <div className={`p-4 rounded-lg ${
+                  submitStatus === 'success' 
+                    ? 'bg-green-900/50 border border-green-600 text-green-200' 
+                    : 'bg-red-900/50 border border-red-600 text-red-200'
+                }`}>
+                  {submitMessage}
+                </div>
+              )}
+
               <div>
                 <label htmlFor="name" className="block text-sm font-chinese-regular mb-2">
                   姓名 *
@@ -161,7 +207,8 @@ const Contact = () => {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 bg-film-800 border border-film-600 text-film-100 focus:border-film-400 focus:outline-none transition-colors"
+                  disabled={isSubmitting}
+                  className="w-full px-4 py-3 bg-film-800 border border-film-600 text-film-100 focus:border-film-400 focus:outline-none transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   placeholder="请输入您的姓名"
                 />
               </div>
@@ -177,7 +224,8 @@ const Contact = () => {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 bg-film-800 border border-film-600 text-film-100 focus:border-film-400 focus:outline-none transition-colors"
+                  disabled={isSubmitting}
+                  className="w-full px-4 py-3 bg-film-800 border border-film-600 text-film-100 focus:border-film-400 focus:outline-none transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   placeholder="请输入您的邮箱"
                 />
               </div>
@@ -193,7 +241,8 @@ const Contact = () => {
                   value={formData.subject}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 bg-film-800 border border-film-600 text-film-100 focus:border-film-400 focus:outline-none transition-colors"
+                  disabled={isSubmitting}
+                  className="w-full px-4 py-3 bg-film-800 border border-film-600 text-film-100 focus:border-film-400 focus:outline-none transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   placeholder="请输入消息主题"
                 />
               </div>
@@ -208,17 +257,19 @@ const Contact = () => {
                   value={formData.message}
                   onChange={handleChange}
                   required
+                  disabled={isSubmitting}
                   rows={6}
-                  className="w-full px-4 py-3 bg-film-800 border border-film-600 text-film-100 focus:border-film-400 focus:outline-none transition-colors resize-none"
+                  className="w-full px-4 py-3 bg-film-800 border border-film-600 text-film-100 focus:border-film-400 focus:outline-none transition-colors resize-none disabled:opacity-50 disabled:cursor-not-allowed"
                   placeholder="请描述您的需求或想法..."
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full film-button"
+                disabled={isSubmitting}
+                className="w-full film-button disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                发送消息
+                {isSubmitting ? '发送中...' : '发送消息'}
               </button>
             </form>
           </div>
