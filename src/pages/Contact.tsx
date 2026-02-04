@@ -30,6 +30,10 @@ const Contact = () => {
 
     console.log('开始提交表单...', formData)
 
+    const formspreeEndpoint = import.meta.env.VITE_FORMSPREE_ENDPOINT || 'https://formspree.io/f/xzdvnlqo'
+    
+    console.log('使用Formspree端点:', formspreeEndpoint)
+
     try {
       const formDataToSend = new FormData()
       formDataToSend.append('name', formData.name)
@@ -38,7 +42,7 @@ const Contact = () => {
       formDataToSend.append('message', formData.message)
 
       console.log('准备发送到Formspree...')
-      const response = await fetch('https://formspree.io/f/xzdvnlqo', {
+      const response = await fetch(formspreeEndpoint, {
         method: 'POST',
         body: formDataToSend,
         headers: {
@@ -63,8 +67,9 @@ const Contact = () => {
           message: ''
         })
       } else {
-        const errorMsg = responseData.error || '提交失败，请稍后再试'
+        const errorMsg = responseData.error || responseData.message || '提交失败，请稍后再试'
         console.error('表单提交失败:', errorMsg)
+        console.error('完整响应:', responseData)
         setSubmitStatus('error')
         setSubmitMessage(`提交失败: ${errorMsg}。请直接发送邮件到 joezb@relaxistudio.com`)
       }
