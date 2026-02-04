@@ -28,15 +28,29 @@ const Contact = () => {
     setSubmitStatus('idle')
     setSubmitMessage('')
 
+    console.log('开始提交表单...', formData)
+
     try {
+      const formDataToSend = new FormData()
+      formDataToSend.append('name', formData.name)
+      formDataToSend.append('email', formData.email)
+      formDataToSend.append('subject', formData.subject)
+      formDataToSend.append('message', formData.message)
+
+      console.log('准备发送到Formspree...')
       const response = await fetch('https://formspree.io/f/xzdvnlqo', {
         method: 'POST',
+        body: formDataToSend,
         headers: {
-          'Content-Type': 'application/json',
           'Accept': 'application/json'
-        },
-        body: JSON.stringify(formData)
+        }
       })
+
+      console.log('响应状态:', response.status)
+      console.log('响应ok:', response.ok)
+      
+      const responseData = await response.json().catch(() => ({}))
+      console.log('响应数据:', responseData)
 
       if (response.ok) {
         setSubmitStatus('success')
@@ -49,13 +63,15 @@ const Contact = () => {
           message: ''
         })
       } else {
+        const errorMsg = responseData.error || '提交失败，请稍后再试'
+        console.error('表单提交失败:', errorMsg)
         setSubmitStatus('error')
-        setSubmitMessage('提交失败，请稍后再试或直接发送邮件到 joezb@relaxistudio.com')
+        setSubmitMessage(`提交失败: ${errorMsg}。请直接发送邮件到 joezb@relaxistudio.com`)
       }
     } catch (error) {
+      console.error('网络错误:', error)
       setSubmitStatus('error')
-      setSubmitMessage('网络错误，请检查您的网络连接或稍后再试')
-      console.error('Form submission error:', error)
+      setSubmitMessage(`网络错误: ${error instanceof Error ? error.message : '未知错误'}。请检查您的网络连接或直接发送邮件到 joezb@relaxistudio.com`)
     } finally {
       setIsSubmitting(false)
     }
