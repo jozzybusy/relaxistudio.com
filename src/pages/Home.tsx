@@ -211,7 +211,7 @@ const Home = () => {
                       title: '交互式体验设计',
                       description: '设计用户互动的沉浸界面',
                       id: 3,
-                      backgroundImage: '/weoffer/交互式体验设计.PNG'
+                      backgroundImage: '/weoffer/交互式体验设计.png'
                     }
                   ]}
                   baseWidth={560}

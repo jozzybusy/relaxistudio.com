@@ -10,7 +10,7 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
-  // 确保所有静态资源都被正确处理
-  assetsInclude: ['**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.gif', '**/*.svg', '**/*.webp'],
+  // 确保所有静态资源都被正确处理（支持大小写扩展名）
+  assetsInclude: ['**/*.png', '**/*.PNG', '**/*.jpg', '**/*.jpeg', '**/*.gif', '**/*.svg', '**/*.webp'],
   publicDir: 'public', // 明确指定 public 目录
 })

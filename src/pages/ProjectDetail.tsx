@@ -64,7 +64,7 @@ const projects: Record<number, Project> = {
     title: "沉浸式临床医学精密仪器模拟",
     category: "VR内容",
     description: "VR环境下完整体验医学精密仪器临床操作流程",
-    image: "/relaxiprojects/沉浸式临床医学精密仪器模拟.PNG",
+    image: "/relaxiprojects/沉浸式临床医学精密仪器模拟.png",
     fullDescription: "为医学教育和培训机构开发的沉浸式精密仪器操作模拟系统，让医学生在虚拟环境中安全地学习和实践复杂设备的操作流程。",
     challenges: [
       "精确模拟精密仪器的物理特性",
@@ -93,7 +93,7 @@ const projects: Record<number, Project> = {
       "Machine Learning",
       "TensorFlow"
     ],
-    images: ["/medicalproject/1.PNG", "/medicalproject/2.PNG", "/medicalproject/3.PNG", "/medicalproject/4.PNG", "/medicalproject/5.PNG"]
+    images: ["/medicalproject/1.png", "/medicalproject/2.png", "/medicalproject/3.png", "/medicalproject/4.png", "/medicalproject/5.png"]
   },
   3: {
     id: 3,

@@ -20,7 +20,7 @@ const Projects = () => {
       title: "沉浸式临床医学精密仪器模拟",
       category: "VR内容",
       description: "VR环境下完整体验医学精密仪器临床操作流程",
-      image: "/relaxiprojects/沉浸式临床医学精密仪器模拟.PNG",
+      image: "/relaxiprojects/沉浸式临床医学精密仪器模拟.png",
     },
     {
       id: 3,
