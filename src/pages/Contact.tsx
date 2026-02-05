@@ -1,29 +1,91 @@
 import { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
-import { useSearchParams } from 'react-router-dom'
 import TrueFocus from '../components/animations/TrueFocus'
 import Map from '../components/Map'
 
 const Contact = () => {
   const location = useLocation()
-  const [searchParams] = useSearchParams()
-  const [showPopup, setShowPopup] = useState(false)
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false)
 
-  // Check if form was submitted successfully
-  useEffect(() => {
-    if (searchParams.get('success') === 'true') {
-      setShowSuccessMessage(true)
-      window.scrollTo(0, 0)
-    }
-  }, [searchParams])
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: '',
+  })
+  const [showPopup, setShowPopup] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
+  const [submitMessage, setSubmitMessage] = useState('')
 
   // Scroll to top when component mounts or location changes
   useEffect(() => {
-    if (!searchParams.get('success')) {
-      window.scrollTo(0, 0)
+    window.scrollTo(0, 0)
+  }, [location.pathname])
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+    setSubmitStatus('idle')
+    setSubmitMessage('')
+
+    console.log('Form submitted:', formData)
+
+    const formspreeEndpoint = 'https://formspree.io/f/xzdvnlqo'
+    
+    try {
+      // Create FormData object
+      const formDataToSend = new FormData()
+      formDataToSend.append('name', formData.name)
+      formDataToSend.append('email', formData.email)
+      formDataToSend.append('subject', formData.subject)
+      formDataToSend.append('message', formData.message)
+      formDataToSend.append('_subject', '来自RelaxiStudio.com的联系表单')
+
+      console.log('Sending to Formspree:', formspreeEndpoint)
+
+      const response = await fetch(formspreeEndpoint, {
+        method: 'POST',
+        body: formDataToSend,
+        headers: {
+          'Accept': 'application/json'
+        }
+      })
+
+      console.log('Response status:', response.status)
+      console.log('Response ok:', response.ok)
+
+      if (response.ok) {
+        setSubmitStatus('success')
+        setSubmitMessage('感谢您的留言！我们会尽快与您联系。')
+        // Reset form
+        setFormData({
+          name: '',
+          email: '',
+          subject: '',
+          message: ''
+        })
+      } else {
+        const errorData = await response.json().catch(() => ({}))
+        const errorMsg = errorData.error || '提交失败，请稍后再试'
+        console.error('Form submission failed:', errorData)
+        setSubmitStatus('error')
+        setSubmitMessage(`提交失败: ${errorMsg}。请稍后再试或直接发送邮件到 joezb@relaxistudio.com`)
+      }
+    } catch (error) {
+      console.error('Network error:', error)
+      setSubmitStatus('error')
+      setSubmitMessage(`网络错误: ${error instanceof Error ? error.message : '未知错误'}。请检查您的网络连接或直接发送邮件到 joezb@relaxistudio.com`)
+    } finally {
+      setIsSubmitting(false)
     }
-  }, [location.pathname, searchParams])
+  }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    })
+  }
 
   return (
     <div className="min-h-screen">
@@ -141,19 +203,17 @@ const Contact = () => {
           {/* Contact Form */}
           <div className="film-card p-8">
             <h2 className="text-2xl font-chinese-bold mb-6">发送消息</h2>
-            
-            {/* Success Message */}
-            {showSuccessMessage && (
-              <div className="mb-6 p-4 rounded-lg bg-green-900/50 border border-green-600 text-green-200">
-                <p className="font-chinese-bold mb-2">🎉 提交成功！</p>
-                <p className="text-sm">感谢您的留言！我们会尽快与您联系。</p>
-              </div>
-            )}
-
-            <form action="https://formspree.io/f/xzdvnlqo" method="POST" className="space-y-6">
-              {/* Hidden fields for Formspree */}
-              <input type="hidden" name="_subject" value="来自RelaxiStudio.com的联系表单" />
-              <input type="hidden" name="_next" value="/contact?success=true" />
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Submit Status Message */}
+              {submitStatus !== 'idle' && (
+                <div className={`p-4 rounded-lg ${
+                  submitStatus === 'success' 
+                    ? 'bg-green-900/50 border border-green-600 text-green-200' 
+                    : 'bg-red-900/50 border border-red-600 text-red-200'
+                }`}>
+                  {submitMessage}
+                </div>
+              )}
 
               <div>
                 <label htmlFor="name" className="block text-sm font-chinese-regular mb-2">
@@ -163,8 +223,11 @@ const Contact = () => {
                   type="text"
                   id="name"
                   name="name"
+                  value={formData.name}
+                  onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 bg-film-800 border border-film-600 text-film-100 focus:border-film-400 focus:outline-none transition-colors"
+                  disabled={isSubmitting}
+                  className="w-full px-4 py-3 bg-film-800 border border-film-600 text-film-100 focus:border-film-400 focus:outline-none transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   placeholder="请输入您的姓名"
                 />
               </div>
@@ -177,8 +240,11 @@ const Contact = () => {
                   type="email"
                   id="email"
                   name="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 bg-film-800 border border-film-600 text-film-100 focus:border-film-400 focus:outline-none transition-colors"
+                  disabled={isSubmitting}
+                  className="w-full px-4 py-3 bg-film-800 border border-film-600 text-film-100 focus:border-film-400 focus:outline-none transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   placeholder="请输入您的邮箱"
                 />
               </div>
@@ -191,8 +257,11 @@ const Contact = () => {
                   type="text"
                   id="subject"
                   name="subject"
+                  value={formData.subject}
+                  onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 bg-film-800 border border-film-600 text-film-100 focus:border-film-400 focus:outline-none transition-colors"
+                  disabled={isSubmitting}
+                  className="w-full px-4 py-3 bg-film-800 border border-film-600 text-film-100 focus:border-film-400 focus:outline-none transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   placeholder="请输入消息主题"
                 />
               </div>
@@ -204,15 +273,22 @@ const Contact = () => {
                 <textarea
                   id="message"
                   name="message"
+                  value={formData.message}
+                  onChange={handleChange}
                   required
+                  disabled={isSubmitting}
                   rows={6}
-                  className="w-full px-4 py-3 bg-film-800 border border-film-600 text-film-100 focus:border-film-400 focus:outline-none transition-colors resize-none"
+                  className="w-full px-4 py-3 bg-film-800 border border-film-600 text-film-100 focus:border-film-400 focus:outline-none transition-colors resize-none disabled:opacity-50 disabled:cursor-not-allowed"
                   placeholder="请描述您的需求或想法..."
                 />
               </div>
 
-              <button type="submit" className="w-full film-button">
-                发送消息
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full film-button disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isSubmitting ? '发送中...' : '发送消息'}
               </button>
             </form>
           </div>
