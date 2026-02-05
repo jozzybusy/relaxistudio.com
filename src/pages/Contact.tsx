@@ -22,7 +22,6 @@ const Contact = () => {
     window.scrollTo(0, 0)
   }, [location.pathname])
 
-  // Triggering redeploy
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
