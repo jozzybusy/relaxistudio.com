@@ -22,6 +22,7 @@ const Contact = () => {
     window.scrollTo(0, 0)
   }, [location.pathname])
 
+  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
