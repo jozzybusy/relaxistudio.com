@@ -4,10 +4,13 @@ import path from 'path'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/', // 添加这一行，确保路径从根目录开始
+  base: '/',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
   },
+  // 确保所有静态资源都被正确处理
+  assetsInclude: ['**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.gif', '**/*.svg', '**/*.webp'],
+  publicDir: 'public', // 明确指定 public 目录
 })
